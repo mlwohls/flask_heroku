@@ -8,10 +8,15 @@ This file creates your application.
 
 import os
 from flask import Flask, render_template, request, redirect, url_for
+import psycopg2
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
+
+
+conn = psycopg2.connect(host="ec2-52-201-127-122.compute-1.amazonaws.com", database="dalsteca66kgv9", user="udemeb02aj6tg6", password="p17p03n8l7pr0t8lvsfk1crol6d")
+cur = conn.cursor()
 
 
 ###
@@ -21,7 +26,12 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configur
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('home.html')
+
+    cur.execute(''' SELECT id FROM candidates''')
+    test_a = cur.fetchall()
+    test = len(test_a)
+    return str(test)
+    # return render_template('home.html')
 
 
 @app.route('/about/')
